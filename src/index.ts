@@ -4,7 +4,7 @@ import { logger } from "./utils/index.js";
 
 // Parse command line arguments first
 const args = process.argv.slice(2);
-const scriptName = args[0] || "stdio";
+const scriptName = args[0] || "http";
 
 async function run() {
   try {
@@ -26,9 +26,9 @@ async function run() {
       default:
         logger.error(`Unknown transport method: ${scriptName}`);
         logger.error("Available transport methods:");
-        logger.error("- stdio (default)");
+        logger.error("- http/streamableHttp (default)");
+        logger.error("- stdio");
         logger.error("- sse");
-        logger.error("- http/streamableHttp");
         process.exit(1);
     }
   } catch (error) {

@@ -176,10 +176,11 @@ app.get("/health", (_req, res) => {
 
 // Start the server
 const PORT = process.env.PORT ?? 3000;
-app.listen(PORT, () => {
-  logger.info(`TAM MCP Server (Streamable HTTP) listening on port ${PORT}`);
-  logger.info(`Health check: http://localhost:${PORT}/health`);
-  logger.info(`MCP endpoint: http://localhost:${PORT}/mcp`);
+const HOST = process.env.HOST ?? "0.0.0.0";
+app.listen(Number(PORT), HOST, () => {
+  logger.info(`TAM MCP Server (Streamable HTTP) listening on ${HOST}:${PORT}`);
+  logger.info(`Health check: http://${HOST}:${PORT}/health`);
+  logger.info(`MCP endpoint: http://${HOST}:${PORT}/mcp`);
 });
 
 // Handle server shutdown

@@ -65,9 +65,9 @@ npm install
 cp .env.example .env
 # Edit .env with your API keys
 
-# Build and start (HTTP - recommended)
+# Build and start (HTTP - default)
 npm run build
-npm run start:http
+npm start
 ```
 
 ### Development Setup
@@ -86,19 +86,53 @@ npm run start:stdio  # STDIO transport
 
 ### Docker Deployment
 
-```bash
-# Build image
-docker build -t tam-mcp-server .
+#### Using Docker Compose (Recommended)
 
-# Run container with environment file
-docker run -p 3000:3000 --env-file .env tam-mcp-server
+```bash
+# Clone and configure
+git clone https://github.com/AxelFooley/TAM-MCP-Server.git
+cd TAM-MCP-Server
+cp .env.example .env
+# Edit .env with your API keys
+
+# Build and start
+docker compose up --build
+
+# Run in background
+docker compose up -d --build
+
+# View logs
+docker compose logs -f
+
+# Stop
+docker compose down
+```
+
+#### Using Pre-built Image from GitHub Container Registry
+
+```bash
+# Pull the latest image
+docker pull ghcr.io/axelfooley/tam-mcp-server:latest
+
+# Run with environment file
+docker run -p 3000:3000 --env-file .env ghcr.io/axelfooley/tam-mcp-server:latest
 
 # Or run with individual environment variables
 docker run -p 3000:3000 \
   -e ALPHA_VANTAGE_API_KEY=your_key_here \
   -e FRED_API_KEY=your_key_here \
   -e NODE_ENV=production \
-  tam-mcp-server
+  ghcr.io/axelfooley/tam-mcp-server:latest
+```
+
+#### Building Locally
+
+```bash
+# Build image
+docker build -t tam-mcp-server .
+
+# Run container
+docker run -p 3000:3000 --env-file .env tam-mcp-server
 ```
 
 ### MCP Integration
@@ -281,14 +315,17 @@ The server integrates with 8 data sources:
 
 ### Transport Methods
 
-**HTTP Server (Recommended)**
+**HTTP Server (Default - Recommended)**
 ```bash
+npm start  # Defaults to streamable HTTP on 0.0.0.0:3000
+# Or explicitly:
 npm run start:http
-# Server available at http://localhost:3000
 ```
 
 **STDIO Transport**
 ```bash
+node dist/index.js stdio
+# Or:
 npm run start:stdio
 ```
 
